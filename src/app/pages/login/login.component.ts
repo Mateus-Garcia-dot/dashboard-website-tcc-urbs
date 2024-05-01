@@ -9,6 +9,7 @@ import { AuthService } from '../../services/auth.service';
 import { RouterModule, Router } from '@angular/router';
 import { Login } from '../../shared/models/login';
 import { HttpClientModule } from '@angular/common/http';
+import { Usuario } from '../../shared/models/usuario';
 
 @Component({
   selector: 'app-login',
@@ -29,24 +30,26 @@ import { HttpClientModule } from '@angular/common/http';
 export class LoginComponent {
   
   
-  credentials: Login = { email: '', password: '' };
+public email = '';
+public password = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
-
+  constructor(private authService: AuthService) {}
 
   onSubmit(): void {
-    this.authService.login(this.credentials).subscribe({
-      next: data => {
-        console.log(data); 
-        this.router.navigate(['/dashboard'], { queryParamsHandling: 'preserve', replaceUrl: true })
-      },
-      error: error => {
-        console.error(error)
-      },
-      complete: () => {
-        console.log('Request complete')
+    this.authService.login(this.email, this.password).subscribe({
+      next: (response) => {
+        console.log('Login successful', response);
+        if (response.token) {
+          localStorage.setItem('access_token', response.token);
+          console.log('Token saved successfully');
+        }},
+      error: (error) => {
+        console.error('Error during login', error);
+        console.log(error.error);
       }
-    } );
+    });
   }
+
+ 
 }
 

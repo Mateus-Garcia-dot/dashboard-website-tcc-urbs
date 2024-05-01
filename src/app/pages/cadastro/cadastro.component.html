@@ -1,47 +1,41 @@
 <div class="container">
     <div class="form-panel">
-<form [formGroup]="form" (ngSubmit)="cadastro()">
+<form (ngSubmit)="onSubmit()">
+
     <mat-form-field appearance="fill">
       <mat-label>Nome</mat-label>
-      <input matInput formControlName="name">
+      <input matInput [(ngModel)]="usuario.name" name="name" required>
     </mat-form-field>
+
     <mat-form-field appearance="fill">
       <mat-label>CPF</mat-label>
-      <input matInput formControlName="cpf">
+      <input matInput [(ngModel)]="usuario.cpf" name="cpf" required>
     </mat-form-field>
+
     <mat-form-field appearance="fill">
       <mat-label>Data de Nascimento</mat-label>
-      <input matInput type="date" formControlName="birthday">
+      <input matInput type="date" [(ngModel)]="usuario.birthday" name="birthday" required>
     </mat-form-field>
+
     <mat-form-field appearance="fill">
       <mat-label>Telefone</mat-label>
-      <input matInput formControlName="cellphone">
+      <input matInput [(ngModel)]="usuario.cellphone" name="cellphone" required>
     </mat-form-field>
+
     <mat-form-field appearance="fill">
       <mat-label>E-mail</mat-label>
-      <input matInput type="email" formControlName="email">
+      <input matInput [(ngModel)]="usuario.email" type="email" name="email" required>
     </mat-form-field>
-    <!--
-    <mat-form-field appearance="fill">
-      <mat-label>Confirmar E-mail</mat-label>
-      <input matInput type="email" formControlName="confirmarEmail">
-      <mat-error *ngIf="form.hasError('mismatch', ['email', 'confirmarEmail'])">E-mails não coincidem.</mat-error>
-    </mat-form-field>
-    -->
+
     <mat-form-field appearance="fill">
       <mat-label>Senha</mat-label>
-      <input matInput type="password" formControlName="password">
+      <input matInput [(ngModel)]="usuario.password" type="password" name="password" required>
     </mat-form-field>
-    <!--
-    <mat-form-field appearance="fill">
-      <mat-label>Confirmar Senha</mat-label>
-      <input matInput type="password" formControlName="confirmarSenha">
-      <mat-error *ngIf="form.hasError('mismatch', ['password', 'confirmarSenha'])">Senhas não coincidem.</mat-error>
-    </mat-form-field>
-    -->
-    <button mat-raised-button type="submit" [disabled]="!form.valid" [ngClass]="{'active': form.valid}" class="button-register">
+
+    <button mat-raised-button type="submit" class="button-register">
         Cadastrar
-      </button>
+    </button>
+
   </form>
 </div>
 </div>

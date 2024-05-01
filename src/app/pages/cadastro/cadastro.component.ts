@@ -32,7 +32,7 @@ import { CadastroService } from '../../services/cadastro.service';
   styleUrl: './cadastro.component.scss'
 })
 
-export class CadastroComponent implements OnInit{
+export class CadastroComponent {
   
   usuario: Usuario = {
     
@@ -44,23 +44,31 @@ export class CadastroComponent implements OnInit{
     cpf: '',
   };
   
-  form!: FormGroup;
+  //form!: FormGroup;
 
-  constructor(private fb: FormBuilder, private cadastroService: CadastroService) {}
+  constructor(private cadastroService: CadastroService) {}
 
+  onSubmit(): void {
+    this.cadastroService.cadastrar(this.usuario).subscribe({
+      next: () => alert('Registration successful'),
+      error: (error) => alert('Registration failed: ' + error.message)
+    });
+  }
+
+  /*
   ngOnInit(): void {
     this.form = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      //confirmarEmail: ['', [Validators.required, Validators.email]],
+      confirmarEmail: ['', [Validators.required, Validators.email]],
       birthday: ['', Validators.required],
       cellphone: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      //confirmarSenha: ['', [Validators.required, Validators.minLength(6)]],
+      confirmarSenha: ['', [Validators.required, Validators.minLength(6)]],
       cpf: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]]
-    }, /*{
+    },
       validators: [this.matchFields('email', 'confirmarEmail'), this.matchFields('password', 'confirmarSenha')]
-    }*/);
+    });
   }
 
   matchFields(field: string, matchTo: string): (group: AbstractControl) => ValidationErrors | null {
@@ -76,7 +84,7 @@ export class CadastroComponent implements OnInit{
     };
   }
 
-
+  
   cadastro(): void {
     console.log('Dados enviados:', this.form.value);
     if (this.form.valid) {
@@ -87,14 +95,5 @@ export class CadastroComponent implements OnInit{
     } else {
       alert('O e-mail fornecido é inválido. Por favor, insira um e-mail válido.');
     }
-  }
-
-  /*
-  onSubmit() {
-    if (this.form.valid) {
-      console.log('Form Data:', this.form.value);
-      // Process data here
-    }
-  }
-  */
+  } */
 }

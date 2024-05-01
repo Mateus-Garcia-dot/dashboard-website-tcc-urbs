@@ -8,16 +8,11 @@ import { Observable } from 'rxjs';
 })
 export class CadastroService {
 
-  private apiUrl = 'https://backend.tccurbstads.com';
+  private apiUrl = 'https://backend.tccurbstads.com/register';
 
   constructor(private http: HttpClient) { }
 
-  cadastrar(usuario: Usuario): Observable<Usuario> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      })
-    };
-    return this.http.post<Usuario>(`${this.apiUrl}/register`, usuario, httpOptions);
+  cadastrar(usuario: Usuario): Observable<Usuario> { 
+    return this.http.post<Usuario>(this.apiUrl, usuario);
   }
 }

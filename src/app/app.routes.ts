@@ -10,6 +10,7 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent, title: 'Login' },
     { path: ' ', redirectTo: '/login', pathMatch: 'full' },
     { path: 'dashboard', component: DashboardComponent },
+    { path: 'login', redirectTo: '/dashboard', pathMatch: 'full' },
     { path: 'cadastro', component: CadastroComponent},
     { path: 'linhas', component: LinhasComponent},
     { path: 'pontos', component: PontosComponent},
