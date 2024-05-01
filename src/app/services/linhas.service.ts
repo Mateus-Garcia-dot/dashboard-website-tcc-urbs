@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Linha } from '../shared/models/linha';
 import { Shape } from '../shared/models/shape';
@@ -14,7 +14,13 @@ export class LinhasService {
   constructor(private http: HttpClient) { }
 
   getLinhas(): Observable<Linha[]> {
-    return this.http.get<Linha[]>(`${this.apiUrl}/lines`);
+
+    const token = localStorage.getItem('access_token'); 
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get<Linha[]>(`${this.apiUrl}/lines`, { headers });
   }
 
   getShape(lineId: number): Observable<Shape> {
