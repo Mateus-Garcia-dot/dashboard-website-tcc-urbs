@@ -10,6 +10,7 @@ import { RouterModule, Router } from '@angular/router';
 import { Login } from '../../shared/models/login';
 import { HttpClientModule } from '@angular/common/http';
 import { Usuario } from '../../shared/models/usuario';
+import { RespostaLogin } from '../../shared/models/resposta-login';
 
 @Component({
   selector: 'app-login',
@@ -39,17 +40,14 @@ public password = '';
     this.authService.login(this.email, this.password).subscribe({
       next: (response) => {
         console.log('Login successful', response);
-        if (response.token) {
-          localStorage.setItem('access_token', response.token);
-          console.log('Token saved successfully');
-        }},
+      },
       error: (error) => {
         console.error('Error during login', error);
-        console.log(error.error);
+  
       }
     });
   }
 
- 
+
 }
 
