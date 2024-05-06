@@ -1,17 +1,19 @@
 export class Linha {
 
-    constructor(codigo: number, nome: string, somenteCartao: boolean, categoria: string, empresa: string) {
-        this.codigo = codigo;
-        this.nome = nome;
-        this.somenteCartao = somenteCartao;
-        this.categoria = categoria;
+    constructor(COD: number, NOME: string, SOMENTE_CARTAO: boolean, CATEGORIA_SERVICO: string, NOME_COR: string, empresa: string) {
+        this.COD = COD;
+        this.NOME = NOME;
+        this.SOMENTE_CARTAO = SOMENTE_CARTAO;
+        this.CATEGORIA_SERVICO = CATEGORIA_SERVICO;
+        this.NOME_COR = NOME_COR;
         this.empresa = empresa;
     }
 
-    codigo: number;
-    nome: string;
-    somenteCartao: boolean;
-    categoria: string;
+    COD: number;
+    NOME: string;
+    SOMENTE_CARTAO: boolean;
+    CATEGORIA_SERVICO: string;
+    NOME_COR: string;
     empresa: string;
 
 }

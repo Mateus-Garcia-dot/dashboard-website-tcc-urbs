@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Linha } from '../shared/models/linha';
 import { Shape } from '../shared/models/shape';
+import { Veiculos } from '../shared/models/veiculos';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,4 @@ export class LinhasService {
     return this.http.get<Linha[]>(`${this.apiUrl}/lines`, { headers });
   }
 
-  getShape(lineId: number): Observable<Shape> {
-    return this.http.get<Shape>(`${this.apiUrl}/shape/${lineId}`);
-  }
 }

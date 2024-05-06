@@ -1,18 +1,26 @@
 export class Pontos {
     
-    codigo: number;
-    nome: string;
-    tipo: string;
-    grupo: string;
-    latitude: number;
-    longitude: number;
+    NOME: string;
+    NUM: string;
+    SEQ: string;
+    GRUPO: string;
+    SENTIDO: string;
+    TIPO: string;
+    ITINERARY_ID: string;
+    COORD: number[];
+    table: any[];
 
-    constructor(codigo: number, nome: string, tipo: string, grupo: string, latitude: number, longitude: number) {
-        this.codigo = codigo;
-        this.nome = nome;
-        this.tipo = tipo;
-        this.grupo = grupo;
-        this.latitude = latitude;
-        this.longitude = longitude;
+    constructor( NOME: string, NUM: string, SEQ: string, GRUPO: string, SENTIDO: string, TIPO: string, ITINERARY_ID: string, COORD: number[], 
+        table: any[]) {
+            this.NOME = NOME;
+            this.NUM = NUM;
+            this.SEQ = SEQ;
+            this.GRUPO = GRUPO;
+            this.SENTIDO = SENTIDO;
+            this.TIPO = TIPO;
+            this.ITINERARY_ID = ITINERARY_ID;
+            this.COORD = COORD;
+            this.table = table;
     }
+
 }

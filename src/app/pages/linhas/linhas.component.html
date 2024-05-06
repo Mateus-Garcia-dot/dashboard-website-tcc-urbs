@@ -1,3 +1,9 @@
 <div>
-    <app-mapa></app-mapa>
+    <select (change)="selecionarLinha($event)">
+        <option value="">Selecione uma linha</option>
+        <option *ngFor="let linha of linhas" [value]="linha.COD">
+            {{ linha.COD }} - {{ linha.NOME }}
+        </option>
+      </select>
+    <app-mapa ></app-mapa>
 </div>

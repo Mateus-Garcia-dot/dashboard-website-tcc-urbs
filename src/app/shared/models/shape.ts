@@ -1,12 +1,13 @@
 export class Shape {
 
-    constructor(sentido: string, latitude: number, longitude: number) {
-        this.sentido = sentido;
-        this.lat = latitude;
-        this.lng = longitude;
-    }
+    SHP: string;
+    COD: string;
+    COORD: number[];
 
-    sentido: string;
-    lat: number;
-    lng: number;
+    constructor(SHP: string, COD: string, COORD: number[]) {
+        this.SHP = SHP;
+        this.COD = COD;
+        this.COORD = COORD;
+    }
+    
 }

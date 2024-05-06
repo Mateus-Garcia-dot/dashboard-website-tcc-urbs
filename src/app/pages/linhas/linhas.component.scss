@@ -1,3 +1,19 @@
 div {
     height: 93%;
   }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    padding: 10px;
+    margin-bottom: 5px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
+  
+  li:hover {
+    background-color: #e0e0e0;
+  }
