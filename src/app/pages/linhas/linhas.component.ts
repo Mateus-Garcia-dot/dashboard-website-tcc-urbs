@@ -1,14 +1,20 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MapaComponent } from '../../components/mapa/mapa.component';
 import { Linha } from '../../shared/models/linha';
 import { LinhasService } from '../../services/linhas.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription, interval } from 'rxjs';
+import { switchMap, startWith } from 'rxjs/operators';
 import { Veiculos } from '../../shared/models/veiculos';
 import { VeiculosService } from '../../services/veiculos.service';
 import { PontosService } from '../../services/pontos.service';
 import { ShapeService } from '../../services/shape.service';
-
+import { MapaService } from '../../services/mapa.service';
+import { MatOptionModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 @Component({
@@ -16,7 +22,12 @@ import { ShapeService } from '../../services/shape.service';
   standalone: true,
   imports: [
     MapaComponent,
-    CommonModule
+    CommonModule, 
+    MatOptionModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule
   ],
   templateUrl: './linhas.component.html',
   styleUrl: './linhas.component.scss'
@@ -26,11 +37,12 @@ export class LinhasComponent implements OnInit{
 
   public linhas: Linha[] = [];
   public veiculo: Veiculos[] = [];
+  private linhaAtual: string = '';
+  private atualizarVeiculo: Subscription | null = null;
 
 
   constructor(private linhaService: LinhasService, private veiculoService: VeiculosService, private pontosService: PontosService,
-    private shapeService: ShapeService
-   ) {}
+    private shapeService: ShapeService, private mapaService: MapaService) {}
 
   ngOnInit(): void {
     this.linhaService.getLinhas().subscribe(
@@ -43,97 +55,49 @@ export class LinhasComponent implements OnInit{
     );  
   }
 
+  ngOnDestroy(): void {
+    if (this.atualizarVeiculo) {
+      this.atualizarVeiculo.unsubscribe();
+    }
+  }
+
   selecionarLinha(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const codigoLinha = selectElement.value
     console.log('Linha selecionada:', codigoLinha);
 
+    if (this.linhaAtual !== codigoLinha) {
+      this.linhaAtual = codigoLinha;
+
     this.pontosService.getStops(codigoLinha).subscribe(stops => {
       console.log('Paradas:', stops);
+      this.mapaService.adicionaParada(stops);
     });
 
     this.shapeService.getShape(codigoLinha).subscribe(shape => {
       console.log('Shape:', shape);
+      this.mapaService.drawShape(shape);
     });
 
-    this.veiculoService.getVehicles(codigoLinha).subscribe(veiculos => {
-      console.log('Veículos:', veiculos);
-    }); 
+    if (this.atualizarVeiculo) {
+      this.atualizarVeiculo.unsubscribe();
+    }
+
+    this.atualizarVeiculo = interval(20000)
+      .pipe(
+        startWith(0),
+        switchMap(() => this.veiculoService.getVehicles(codigoLinha))
+      )
+      .subscribe(
+        veiculos => {
+          console.log('Veículos:', veiculos);
+          this.mapaService.adicionarVeiculos(veiculos);
+        },
+        error => console.error('Erro ao atualizar veículos:', error)
+      );
+    }
   }
-
-   /*
-   addMarkers(veiculos: any[]){
-    this.veiculo.forEach(veiculos =>{
-      let lat = parseFloat(veiculos.LAT);
-      let lng = parseFloat(veiculos.LON);
-      const position = new google.maps.LatLng(lat, lng);
-      const marker = new google.maps.marker.AdvancedMarkerElement({
-        position: position,
-        map: this.map,
-        title: veiculos.COD
-      });
-    })
-   }
-
-  veiculos.forEach(veiculo =>{
-        let lat = parseFloat(veiculo.LAT);
-        let lng = parseFloat(veiculo.LON);
-        const position = new google.maps.LatLng(lat, lng);
-        const marker = new google.maps.marker.AdvancedMarkerElement({
-          position: position,
-          map: this.map,
-          title: veiculo.COD
-        });
-      })
-    addMarkers(veiculos: any[]) {
-      this.clearMarkers();
-      veiculos.forEach(veiculo => {
-        const marker = new google.maps.marker.AdvancedMarkerElement({
-          position: { lat: parseFloat(veiculo.LAT), lng: parseFloat(veiculo.LON) },
-          map: this.map,
-          title: veiculo.COD || 'Veículo'
-        });
-        this.markers.push(marker);
-      });
-    }
-
-    clearMarkers() {
-      this.markers.forEach(marker => marker.setMap(null));
-      this.markers = [];
-    }
-
-    fetchVehicles(linhaId: string) {
-      // Substitua isso por uma chamada real ao seu serviço
-      const veiculos = this.veiculoService.getVehicles(linhaId); // Esta função deve ser implementada para buscar veículos
-      this.addMarkers(veiculos);
-    }
-  addMarkers(veiculos: any[]): void {
-     // Limpa marcadores antigos
-     this.markers.forEach(marker => marker.setMap(null));
-     this.markers = [];
- 
-     // Adiciona novos marcadores
-     veiculos.forEach(veiculo => {
-       const lat = parseFloat(veiculo.LAT);
-       const lng = parseFloat(veiculo.LON);
-       const marker = new google.maps.marker.AdvancedMarkerElement({
-         position: new google.maps.LatLng(lat, lng),
-         title: veiculo.COD
-       });
-       this.markers.push(marker);
-     });
-  }
-
-    buscaVeiculos() {
-      // Suponha que lineId esteja disponível ou seja gerenciado de alguma forma
-      const codigoLinha = 'some_line_id';
-      this.linhaService.getVehicles(codigoLinha).subscribe(veiculo => {
-        this.veiculo = veiculo.map(veiculos => ({
-          position: { lat: veiculos.LAT, lng: veiculos.LON },
-          COD: veiculos.COD
-        }));
-      });
-      setTimeout(() => this.buscaVeiculos(), 10000); // atualiza a posição a cada 10 segundos
-    }
-    */
+  
 }
+
+

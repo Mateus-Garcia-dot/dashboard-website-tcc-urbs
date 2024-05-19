@@ -16,4 +16,14 @@ mat-toolbar {
         margin-bottom: 0px;
       }
     }
+
+    .logout-button {
+      button {
+        background-color: #f44336;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+      }
+    }
   }

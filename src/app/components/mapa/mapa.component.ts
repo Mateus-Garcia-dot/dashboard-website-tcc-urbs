@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { MapaService } from '../../services/mapa.service';
 
 @Component({
   selector: 'app-mapa',
@@ -7,10 +8,22 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
   templateUrl: './mapa.component.html',
   styleUrl: './mapa.component.scss'
 })
-export class MapaComponent implements OnInit{
+export class MapaComponent implements AfterViewInit{
 
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef<HTMLDivElement>;
 
+  constructor(private mapaService: MapaService) {}
+
+  ngAfterViewInit(): void {
+    const mapOptions: google.maps.MapOptions = {
+      center: new google.maps.LatLng(-25.425039921571354, -49.26776760408415),
+      zoom: 14
+    };
+    const map = new google.maps.Map(this.mapContainer.nativeElement, mapOptions);
+    this.mapaService.setMap(map);
+  }
+
+  /*
   ngOnInit() {
     this.loadMap();
   }
@@ -32,5 +45,6 @@ export class MapaComponent implements OnInit{
 
     new google.maps.Map(this.mapContainer.nativeElement, mapOptions);
   }
+  */
 
 }

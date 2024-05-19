@@ -5,14 +5,15 @@ import { CadastroComponent } from './pages/cadastro/cadastro.component';
 import { LinhasComponent } from './pages/linhas/linhas.component';
 import { PontosComponent } from './pages/pontos/pontos.component';
 import { IndicadoresComponent } from './pages/indicadores/indicadores.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-    { path: 'login', component: LoginComponent, title: 'Login' },
-    { path: ' ', redirectTo: '/login', pathMatch: 'full' },
-    { path: 'dashboard', component: DashboardComponent },
+    { path: 'login', component: LoginComponent },
     { path: 'login', redirectTo: '/dashboard', pathMatch: 'full' },
-    { path: 'cadastro', component: CadastroComponent},
-    { path: 'linhas', component: LinhasComponent},
-    { path: 'pontos', component: PontosComponent},
-    { path: 'indicadores', component: IndicadoresComponent}
+    { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+    { path: 'cadastro', component: CadastroComponent, canActivate: [authGuard]},
+    { path: 'linhas', component: LinhasComponent, canActivate: [authGuard]},
+    { path: 'indicadores', component: IndicadoresComponent, canActivate: [authGuard]},
+    { path: ' ', redirectTo: '/login', pathMatch: 'full' },
+    { path: '**', redirectTo: '/login' }
 ];

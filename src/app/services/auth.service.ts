@@ -24,7 +24,7 @@ export class AuthService {
         tap(response => {
           if (response.access_token) {
             localStorage.setItem('access_token', response.access_token);
-            console.log('Token saved successfully');
+            console.log('Token salvo com sucesso');
           }
         })
       );
@@ -36,5 +36,9 @@ export class AuthService {
 
     estaLogado(): boolean {
       return !!this.getToken();
+    }
+
+    logout(): void {
+      localStorage.removeItem('access_token');
     }
 }

@@ -6,13 +6,7 @@
         <button mat-button routerLink="/cadastro"><mat-icon>person_add</mat-icon> Cadastro</button>
     </div>
     <div>
-      <mat-form-field appearance="fill">
-        <mat-label>Pesquisar</mat-label>
-        <input matInput>
-      </mat-form-field>
-      <button mat-icon-button>
-        <mat-icon>search</mat-icon>
-      </button>
+      <button mat-button (click)="logout()"><mat-icon>logout</mat-icon> Logout</button>
     </div>
   </mat-toolbar>
 
