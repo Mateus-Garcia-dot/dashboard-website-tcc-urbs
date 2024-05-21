@@ -32,4 +32,8 @@ export class NavbarComponent {
     this.router.navigate(['/login']);
   }
 
+  shouldShowNavbar(): boolean {
+    return this.router.url !== '/login';
+  }
+
 }

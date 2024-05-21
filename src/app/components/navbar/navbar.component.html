@@ -1,4 +1,5 @@
-<mat-toolbar color="primary">
+<ng-container *ngIf="shouldShowNavbar()">
+  <mat-toolbar color="primary">
     <div style="flex-grow: 1;">
         <button mat-button routerLink="/dashboard"><mat-icon>dashboard</mat-icon> Dashboard</button>
         <button mat-button routerLink="/linhas"><mat-icon>directions_bus</mat-icon> Linhas</button>
@@ -9,5 +10,5 @@
       <button mat-button (click)="logout()"><mat-icon>logout</mat-icon> Logout</button>
     </div>
   </mat-toolbar>
-
+</ng-container>
   

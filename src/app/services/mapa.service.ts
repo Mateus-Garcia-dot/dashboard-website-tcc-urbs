@@ -77,9 +77,7 @@ export class MapaService {
           <strong>Horário de atualização:</strong> ${veiculos.REFRESH}<br>
           <strong>Sentido:</strong> ${veiculos.SENTIDO}<br>
           <strong>Situação:</strong> ${veiculos.SITUACAO}<br>
-          <strong>Status:</strong> ${veiculos.SITUACAO2}
-        </div>
-      `;
+        </div>`;
 
       const infoWindow = new google.maps.InfoWindow({
         content: contentString

@@ -11,11 +11,20 @@ import { NgIf } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { Usuario } from '../../shared/models/usuario';
 import { CadastroService } from '../../services/cadastro.service';
+import { CpfDirective } from '../../directives/cpf.directive';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { MatDialog } from '@angular/material/dialog';
+import { CpfInvalidoComponent } from '../../components/cpf-invalido/cpf-invalido.component';
+import { cpfValidador } from '../../validators/cpf-validador';
+import { MensagemErroComponent } from '../../components/mensagem-erro/mensagem-erro.component';
+import { emailValidador } from '../../validators/email-validador';
+import { SucessoComponent } from '../../components/sucesso/sucesso.component';
 
 
 @Component({
   selector: 'app-cadastro',
   standalone: true,
+  providers: [provideNgxMask()],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -27,73 +36,69 @@ import { CadastroService } from '../../services/cadastro.service';
     MatNativeDateModule,
     NgIf,
     CommonModule,
+    CpfDirective,
+    NgxMaskDirective,
+    CpfInvalidoComponent,
+    MensagemErroComponent
   ],
   templateUrl: './cadastro.component.html',
   styleUrl: './cadastro.component.scss'
 })
 
 export class CadastroComponent {
+  cadastroForm: FormGroup;
   
-  usuario: Usuario = {
-    
-    name: '',
-    email: '',
-    birthday: '',
-    cellphone: '',
-    password: '',
-    cpf: '',
-  };
-  
-  //form!: FormGroup;
-
-  constructor(private cadastroService: CadastroService) {}
-
-  onSubmit(): void {
-    this.cadastroService.cadastrar(this.usuario).subscribe({
-      next: () => alert('Registration successful'),
-      error: (error) => alert('Registration failed: ' + error.message)
-    });
-  }
-
-  /*
-  ngOnInit(): void {
-    this.form = this.fb.group({
+  constructor(
+    private fb: FormBuilder,
+    private cadastroService: CadastroService,
+    private dialog: MatDialog
+  ) {
+    this.cadastroForm = this.fb.group({
       name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      confirmarEmail: ['', [Validators.required, Validators.email]],
+      cpf: ['', [Validators.required, cpfValidador]],
       birthday: ['', Validators.required],
       cellphone: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmarSenha: ['', [Validators.required, Validators.minLength(6)]],
-      cpf: ['', [Validators.required, Validators.pattern(/^\d{11}$/)]]
-    },
-      validators: [this.matchFields('email', 'confirmarEmail'), this.matchFields('password', 'confirmarSenha')]
+      email: ['', [Validators.required, emailValidador()]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
-  matchFields(field: string, matchTo: string): (group: AbstractControl) => ValidationErrors | null {
-    return (group: AbstractControl): ValidationErrors | null => {
-      const input = group.get(field);
-      const confirmInput = group.get(matchTo);
-      if (input && confirmInput && input.value !== confirmInput.value) {
-        confirmInput.setErrors({ mismatch: true });
-        return { mismatch: true };
-      } else {
-        return null;
+  onSubmit(): void {
+    if (this.cadastroForm.invalid) {
+      const emailControl = this.cadastroForm.get('email');
+      if (emailControl?.errors?.['invalidEmail']) {
+        this.openErrorDialog('E-mail no formato inválido.');
+        return;
       }
-    };
+      const cpfControl = this.cadastroForm.get('cpf');
+      if (cpfControl?.errors?.['cpfInvalid']) {
+        this.openErrorDialog('CPF inválido.');
+        return;
+      }
+    }
+
+    this.cadastroService.cadastrar(this.cadastroForm.value).subscribe({
+      next: () => this.openSucesso('Usuário cadastrado com sucesso!'),
+      error: (error) => {
+        if (error.status === 400) {
+          this.openErrorDialog('Já existe um usuário com esse e-mail ou CPF.');
+        } else {
+          alert('Registration failed: ' + error.message);
+        }
+      }
+    });
   }
 
-  
-  cadastro(): void {
-    console.log('Dados enviados:', this.form.value);
-    if (this.form.valid) {
-      this.cadastroService.cadastrar(this.usuario).subscribe({
-        next: (usuario) => console.log('User registered successfully!', usuario),
-        error: (error) => console.error('Registration failed!', error)
-      });
-    } else {
-      alert('O e-mail fornecido é inválido. Por favor, insira um e-mail válido.');
-    }
-  } */
+  openErrorDialog(message: string): void {
+    this.dialog.open(MensagemErroComponent, {
+      data: { message }
+    });
+  }
+
+  openSucesso(message: string): void {
+    this.dialog.open(SucessoComponent, {
+      data: { message }
+    });
+  }
+
 }

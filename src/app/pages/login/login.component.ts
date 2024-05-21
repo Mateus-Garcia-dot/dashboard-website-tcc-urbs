@@ -11,6 +11,8 @@ import { Login } from '../../shared/models/login';
 import { HttpClientModule } from '@angular/common/http';
 import { Usuario } from '../../shared/models/usuario';
 import { RespostaLogin } from '../../shared/models/resposta-login';
+import { ErroLoginComponent } from '../../components/erro-login/erro-login.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +25,8 @@ import { RespostaLogin } from '../../shared/models/resposta-login';
     MatButtonModule,
     MatIconModule,
     RouterModule,
-    HttpClientModule
+    HttpClientModule, 
+    ErroLoginComponent
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -34,7 +37,7 @@ export class LoginComponent {
 public email = '';
 public password = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private dialog: MatDialog) {}
 
   onSubmit(): void {
     this.authService.login(this.email, this.password).subscribe({
@@ -44,11 +47,14 @@ public password = '';
       },
       error: (error) => {
         console.error('Error during login', error);
+        this.openErrorDialog();
   
       }
     });
   }
 
-
+  openErrorDialog(): void {
+    this.dialog.open(ErroLoginComponent);
+  }
 }
 
