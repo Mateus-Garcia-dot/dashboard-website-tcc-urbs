@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Veiculo } from '../shared/models/veiculo';
 
 declare var google: any;
 
@@ -10,6 +11,7 @@ export class MapaService {
   
   private map!: google.maps.Map;
   private veiculoMarker: google.maps.Marker[] = [];
+  private todosVeiculosMarker: google.maps.Marker[] = [];
   private paradaMarker: google.maps.Marker[] = [];
   private shapePath: google.maps.Polyline | null = null;
 
@@ -88,6 +90,47 @@ export class MapaService {
       });
 
       this.veiculoMarker.push(marker);
+    });
+  }
+
+  adicionarTodosVeiculos(veiculos: Veiculo[]) {
+    this.todosVeiculosMarker.forEach(marker => marker.setMap(null));
+    this.todosVeiculosMarker = [];
+
+    veiculos.forEach(veiculos => {
+      //if(veiculos.SITUACAO2 == "REALIZANDO ROTA"){
+        const position = new google.maps.LatLng(veiculos.LAT, veiculos.LON);
+        const marker = new google.maps.Marker({
+          position,
+          map: this.map,
+          title: veiculos.CODIGOLINHA,
+          icon: {
+            url: 'assets/images/directions_bus_24dp_FILL0_wght400_GRAD0_opsz24.png',
+            scaledSize: new google.maps.Size(24, 24)
+          }
+        });
+
+        const contentString = `
+          <div>
+          <strong>Linha:</strong> ${veiculos.CODIGOLINHA}<br>
+          <strong>Código:</strong> ${veiculos.COD}<br>
+          <strong>Horário de atualização:</strong> ${veiculos.REFRESH}<br>
+          <strong>Sentido:</strong> ${veiculos.CODIGOLINHA}<br>
+          <strong>Situação:</strong> ${veiculos.SITUACAO}<br>
+          <strong>Status:</strong> ${veiculos.SITUACAO2}
+          </div>
+        `;
+
+        const infoWindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+
+        marker.addListener('click', () => {
+          infoWindow.open(this.map, marker);
+        });
+
+        this.todosVeiculosMarker.push(marker);
+      //  }
     });
   }
 

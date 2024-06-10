@@ -1,0 +1,41 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.grid-container {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(2, 1fr);  /* Dois cards por linha */
+  grid-gap: 20px;
+  padding: 20px;
+}
+
+.card {
+  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 600px;
+  height: 550px;
+  margin-left: 15%;
+}
+
+h2 {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  padding-bottom: 10px;
+  margin: 0;
+  font-size: 18px;
+  text-align: center;
+}
+
+iframe {
+  border: none;
+  width: 100%;
+  height: calc(100% - 60px);   /* Ajuste para a altura do iframe com espaço entre o cabeçalho */
+  margin-top: 40px; 
+}

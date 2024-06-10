@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Veiculos } from '../shared/models/veiculos';
+import { Veiculo } from '../shared/models/veiculo';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,16 @@ export class VeiculosService {
     });
     return this.http.get<Veiculos[]>(`${this.apiUrl}/vehicles/${codigoLinha}`, { headers });
   }
+
+  getAllVehicles(): Observable<Veiculo[]> {
+
+    const token = localStorage.getItem('access_token'); 
+    const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+    });
+    return this.http.get<Veiculo[]>(`${this.apiUrl}/vehicles`, { headers });
+  }
+
 
   updateVeiculos(veiculos: any[]): void {
     this.veiculosSource.next(veiculos);
