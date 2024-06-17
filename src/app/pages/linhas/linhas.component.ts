@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MapaComponent } from '../../components/mapa/mapa.component';
 import { Linha } from '../../shared/models/linha';
@@ -29,7 +29,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatInputModule,
     MatAutocompleteModule,
     ReactiveFormsModule,
-    MatSelectModule
+    MatSelectModule,
+    FormsModule
   ],
   templateUrl: './linhas.component.html',
   styleUrl: './linhas.component.scss'
@@ -43,6 +44,23 @@ export class LinhasComponent implements OnInit, OnDestroy{
   private atualizarVeiculo: Subscription | null = null;
   controleLinhas = new FormControl();
   public linhasFiltradas!: Observable<Linha[]>;
+  filtroSituacao: string | null = null; // Nova propriedade para o filtro SITUACAO
+  filtroAdapt: number | null = null;
+  filtroTipoVeic: number | null = null;
+  tiposVeiculo = [
+    { id: 1, nome: 'COMUM' },
+    { id: 2, nome: 'SEMI PADRON' },
+    { id: 3, nome: 'PADRON' },
+    { id: 4, nome: 'ARTICULADO' },
+    { id: 5, nome: 'BIARTICULADO' },
+    { id: 6, nome: 'MICRO' },
+    { id: 7, nome: 'MICRO ESPECIAL' },
+    { id: 8, nome: 'BIARTIC. BIO' },
+    { id: 9, nome: 'ARTIC. BIO' },
+    { id: 10, nome: 'HIBRIDO' },
+    { id: 11, nome: 'HIBRIDO BIO' },
+    { id: 12, nome: 'ELÉTRICO' }
+  ];
 
   constructor(private linhaService: LinhasService, private veiculoService: VeiculosService, private pontosService: PontosService,
     private shapeService: ShapeService, private mapaService: MapaService) {}

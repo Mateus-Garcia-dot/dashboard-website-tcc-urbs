@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MapaComponent } from '../../components/mapa/mapa.component';
 import { VeiculosService } from '../../services/veiculos.service';
 import { Veiculo } from '../../shared/models/veiculo';
@@ -13,7 +13,7 @@ import { MapaService } from '../../services/mapa.service';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnDestroy {
   public veiculos: Veiculo[] = [];
   intervalo: any;
 
@@ -26,17 +26,7 @@ export class DashboardComponent {
   ngOnInit(): void {
     this.veiculoService.getAllVehicles().subscribe(
       (veiculos: Veiculo[]) => {
-        this.veiculos = veiculos;
-
-        let novaLista: any[] = [];
-        
-        veiculos.forEach(item => {
-          
-          if(item.SITUACAO2 === "REALIZANDO ROTA") {
-            novaLista.push(item);
-          }
-        });
-        console.log(novaLista);
+        this.veiculos = veiculos.filter(item => item.SITUACAO2 === "REALIZANDO ROTA");
         this.chamarFuncao();
       },
       (error) => {
@@ -47,5 +37,9 @@ export class DashboardComponent {
 
   chamarFuncao() {
     this.mapaService.adicionarTodosVeiculos(this.veiculos);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.intervalo); 
   }
 }
