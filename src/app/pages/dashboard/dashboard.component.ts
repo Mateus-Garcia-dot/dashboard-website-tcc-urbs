@@ -36,20 +36,7 @@ intervalo: any;
 filtroSituacao: string | null = null;
 filtroAdapt: string | null = null;
 filtroTipoVeic: string | null = null;
-tiposVeiculo = [
-  { id: '1', nome: 'COMUM' },
-  { id: '2', nome: 'SEMI PADRON' },
-  { id: '3', nome: 'PADRON' },
-  { id: '4', nome: 'ARTICULADO' },
-  { id: '5', nome: 'BIARTICULADO' },
-  { id: '6', nome: 'MICRO' },
-  { id: '7', nome: 'MICRO ESPECIAL' },
-  { id: '8', nome: 'BIARTIC. BIO' },
-  { id: '9', nome: 'ARTIC. BIO' },
-  { id: '10', nome: 'HIBRIDO' },
-  { id: '11', nome: 'HIBRIDO BIO' },
-  { id: '12', nome: 'ELÉTRICO' }
-];
+tiposVeiculo: { id: string, nome: string }[] = [];
   
 
   constructor(private veiculoService: VeiculosService, private mapaService: MapaService) {
@@ -77,7 +64,7 @@ tiposVeiculo = [
           tipoVeic &&
           (!this.filtroSituacao || v.SITUACAO === this.filtroSituacao);
       });
-      this.mapaService.adicionarVeiculos(this.veiculoFiltrado);
+      this.mapaService.adicionarTodosVeiculos(this.veiculoFiltrado);
     }
   }
 

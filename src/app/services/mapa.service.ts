@@ -125,7 +125,7 @@ export class MapaService {
           title: veiculos.CODIGOLINHA,
           icon: {
             url: 'assets/images/directions_bus_24dp_FILL0_wght400_GRAD0_opsz24.png',
-            scaledSize: new google.maps.Size(24, 24)
+            scaledSize: new google.maps.Size(30, 30)
           }
         });
 
@@ -134,7 +134,6 @@ export class MapaService {
           <strong>Linha:</strong> ${veiculos.CODIGOLINHA}<br>
           <strong>Código:</strong> ${veiculos.COD}<br>
           <strong>Horário de atualização:</strong> ${veiculos.REFRESH}<br>
-          <strong>Sentido:</strong> ${veiculos.CODIGOLINHA}<br>
           <strong>Situação:</strong> ${veiculos.SITUACAO}<br>
           <strong>Status:</strong> ${veiculos.SITUACAO2}
           </div>
