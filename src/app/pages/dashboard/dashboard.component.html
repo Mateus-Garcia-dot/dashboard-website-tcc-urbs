@@ -1,3 +1,36 @@
 <div>
+<div class="filtros-wrapper">
+    <div class="half-width">
+      <mat-form-field appearance="fill" class="filtro-adaptado">
+        <mat-label>Adaptado para cadeirantes</mat-label>
+        <mat-select [(ngModel)]="filtroAdapt" name="filtroAdapt" (ngModelChange)="aplicarFiltros()">
+          <mat-option [value]="'1'">Sim</mat-option>
+          <mat-option [value]="'0'">Não</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="half-width">
+      <mat-form-field appearance="fill" class="filtro-tipo-veic">
+        <mat-label>Tipo do ônibus</mat-label>
+        <mat-select [(ngModel)]="filtroTipoVeic" name="filtroTipoVeic" (ngModelChange)="aplicarFiltros()">
+          <mat-option *ngFor="let tipo of tiposVeiculo" [value]="tipo.id">{{ tipo.nome }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="half-width">
+      <mat-form-field appearance="fill" class="filtro-situacao">
+        <mat-label>Situação do veículo</mat-label>
+        <mat-select [(ngModel)]="filtroSituacao" name="filtroSituacao" (ngModelChange)="aplicarFiltros()">
+          <mat-option value="NO HORÁRIO">No Horário</mat-option>
+          <mat-option value="ADIANTADO">Adiantado</mat-option>
+          <mat-option value="ATRASADO">Atrasado</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  
+  <div class="app-mapa-container">
     <app-mapa></app-mapa>
+  </div>
+
 </div>
