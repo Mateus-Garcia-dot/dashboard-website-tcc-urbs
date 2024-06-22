@@ -65,10 +65,10 @@ export class MapaService {
       const marker = new google.maps.Marker({
         position,
         map: this.map,
-        title: veiculos.NAME,
+        title: veiculos.COD,
         icon: {
           url: 'assets/images/directions_bus_24dp_FILL0_wght400_GRAD0_opsz24.png',
-          scaledSize: new google.maps.Size(24, 24)
+          scaledSize: new google.maps.Size(40, 40)
         }
       });
 
@@ -79,6 +79,7 @@ export class MapaService {
           <strong>Horário de atualização:</strong> ${veiculos.REFRESH}<br>
           <strong>Sentido:</strong> ${veiculos.SENTIDO}<br>
           <strong>Situação:</strong> ${veiculos.SITUACAO}<br>
+          <strong>Tipo de Veículo:</strong> ${this.getNomeTipoVeiculo(veiculos.TIPO_VEIC)}
         </div>`;
 
       const infoWindow = new google.maps.InfoWindow({
@@ -93,12 +94,30 @@ export class MapaService {
     });
   }
 
+  getNomeTipoVeiculo(id: string): string {
+    const tiposVeiculo = [
+      { id: 1, nome: 'COMUM' },
+      { id: 2, nome: 'SEMI PADRON' },
+      { id: 3, nome: 'PADRON' },
+      { id: 4, nome: 'ARTICULADO' },
+      { id: 5, nome: 'BIARTICULADO' },
+      { id: 6, nome: 'MICRO' },
+      { id: 7, nome: 'MICRO ESPECIAL' },
+      { id: 8, nome: 'BIARTIC. BIO' },
+      { id: 9, nome: 'ARTIC. BIO' },
+      { id: 10, nome: 'HIBRIDO' },
+      { id: 11, nome: 'HIBRIDO BIO' },
+      { id: 12, nome: 'ELÉTRICO' }
+    ];
+    const tipo = tiposVeiculo.find(t => t.id === +id); // Converter id para número
+    return tipo ? tipo.nome : 'Desconhecido';
+  }
+
   adicionarTodosVeiculos(veiculos: Veiculo[]) {
     this.todosVeiculosMarker.forEach(marker => marker.setMap(null));
     this.todosVeiculosMarker = [];
 
     veiculos.forEach(veiculos => {
-      //if(veiculos.SITUACAO2 == "REALIZANDO ROTA"){
         const position = new google.maps.LatLng(veiculos.LAT, veiculos.LON);
         const marker = new google.maps.Marker({
           position,
@@ -130,7 +149,6 @@ export class MapaService {
         });
 
         this.todosVeiculosMarker.push(marker);
-      //  }
     });
   }
 

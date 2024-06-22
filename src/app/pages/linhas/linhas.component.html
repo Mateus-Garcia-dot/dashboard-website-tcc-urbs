@@ -9,36 +9,40 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-    <div class="filtros-wrapper">
-      <div class="half-width">
-        <mat-form-field appearance="fill" class="filtro-adaptado">
-          <mat-label>Adaptado para cadeirantes</mat-label>
-          <mat-select [(ngModel)]="filtroAdapt" name="filtroAdapt">
-            <mat-option [value]="1">Sim</mat-option>
-            <mat-option [value]="0">Não</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="half-width">
-        <!-- Filtro TIPO_VEIC -->
-        <mat-form-field appearance="fill" class="filtro-tipo-veic">
-          <mat-label>Tipo do ônibus</mat-label>
-          <mat-select [(ngModel)]="filtroTipoVeic" name="filtroTipoVeic">
-            <mat-option *ngFor="let tipo of tiposVeiculo" [value]="tipo.id">{{ tipo.nome }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="half-width">
-        <!-- Novo filtro SITUACAO -->
-        <mat-form-field appearance="fill" class="filtro-situacao">
-          <mat-label>Situação do veículo</mat-label>
-          <mat-select [(ngModel)]="filtroSituacao" name="filtroSituacao">
-            <mat-option value="1">Teste 1</mat-option>
-            <mat-option value="2">Teste 2</mat-option>
-            <mat-option value="3">Teste 3</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+
+    <div class="filtros-wrapper" *ngIf="mostrarFiltros">
+        <div class="half-width">
+          <mat-form-field appearance="fill" class="filtro-adaptado">
+            <mat-label>Adaptado para cadeirantes</mat-label>
+            <mat-select [(ngModel)]="filtroAdapt" name="filtroAdapt" (ngModelChange)="aplicarFiltros()">
+              <mat-option *ngFor="let adapt of adaptados" [value]="adapt">{{ adapt ? 'Sim' : 'Não' }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="half-width">
+          <mat-form-field appearance="fill" class="filtro-tipo-veic">
+            <mat-label>Tipo do ônibus</mat-label>
+            <mat-select [(ngModel)]="filtroTipoVeic" name="filtroTipoVeic" (ngModelChange)="aplicarFiltros()">
+              <mat-option *ngFor="let tipo of tiposVeiculo" [value]="tipo.id">{{ tipo.nome }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="half-width">
+          <mat-form-field appearance="fill" class="filtro-situacao">
+            <mat-label>Situação do veículo</mat-label>
+            <mat-select [(ngModel)]="filtroSituacao" name="filtroSituacao" (ngModelChange)="aplicarFiltros()">
+              <mat-option *ngFor="let situacao of situacoes" [value]="situacao">{{ situacao }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="half-width">
+          <mat-form-field appearance="fill" class="filtro-sentido">
+            <mat-label>Sentido</mat-label>
+            <mat-select [(ngModel)]="filtroSentido" name="filtroSentido" (ngModelChange)="aplicarFiltros()">
+              <mat-option *ngFor="let sentido of sentidos" [value]="sentido">{{ sentido }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
     </div>
   </div>
   <div class="app-mapa-container">

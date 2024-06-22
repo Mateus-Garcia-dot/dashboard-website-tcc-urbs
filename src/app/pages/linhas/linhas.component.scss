@@ -20,7 +20,7 @@ mat-form-field {
 
 .app-mapa-container {
   width: 100%;
-  height: 824px;
+  height: 745px;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -37,8 +37,8 @@ mat-form-field {
   width: 50%; /* Cada filtro ocupa metade da largura disponível */
 }
 
-.filtro-adaptado,
+.filtro-sentido,
 .filtro-tipo-veic,
 .filtro-situacao {
-  margin-bottom: 10px; /* Espaçamento opcional abaixo dos filtros */
+  margin-bottom: 0px; /* Espaçamento opcional abaixo dos filtros */
 }
