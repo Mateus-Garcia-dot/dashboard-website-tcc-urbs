@@ -48,7 +48,7 @@ export class LinhasComponent implements OnInit, OnDestroy{
   private atualizarVeiculo: Subscription | null = null;
   controleLinhas = new FormControl();
   public linhasFiltradas!: Observable<Linha[]>;
-  filtroSituacao: string | null = null; // Nova propriedade para o filtro SITUACAO
+  filtroSituacao: string | null = null; 
   filtroAdapt: number | null = null;
   filtroTipoVeic: number | null = null;
   filtroSentido: string | null = null;

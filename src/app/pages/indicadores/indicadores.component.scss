@@ -17,8 +17,8 @@ body {
   border: 1px solid #ccc;
   border-radius: 8px;
   overflow: hidden;
-  width: 600px;
-  height: 550px;
+  width: 1400px;
+  height: 800px;
   margin-left: 15%;
 }
 
@@ -37,5 +37,5 @@ iframe {
   border: none;
   width: 100%;
   height: calc(100% - 60px);   /* Ajuste para a altura do iframe com espaço entre o cabeçalho */
-  margin-top: 40px; 
+  margin-top: 0px; 
 }

@@ -109,7 +109,7 @@ export class MapaService {
       { id: 11, nome: 'HIBRIDO BIO' },
       { id: 12, nome: 'ELÉTRICO' }
     ];
-    const tipo = tiposVeiculo.find(t => t.id === +id); // Converter id para número
+    const tipo = tiposVeiculo.find(t => t.id === +id);
     return tipo ? tipo.nome : 'Desconhecido';
   }
 
